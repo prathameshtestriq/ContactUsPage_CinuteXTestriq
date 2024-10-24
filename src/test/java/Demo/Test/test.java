@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -45,7 +46,10 @@ public static WebDriverWait wait;
 		driver.findElement(By.xpath("(//div[@class='mf_select__menu-list css-11unzgr']/div)[2]")).click();
 		WebElement sendbutton = driver.findElement(By.xpath("(//button[@type='submit'])[1]"));
 		sendbutton.click();
-		WebElement thankyouMessage = driver.findElement(By.xpath("//div[@class='mf-response-msg']/p[text()='Thank you! We will get back soon.']"));
+		WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement thankyouMessage = wait.until(ExpectedConditions.visibilityOfElementLocated(
+            By.xpath("//div[@class='mf-response-msg']/p[text()='Thank you! We will get back soon.']")
+        ));
 		String actualMessage = thankyouMessage.getText();
 		String expectedMessage = "Thank you! We will get back soon.";
 		Assert.assertEquals(actualMessage, expectedMessage,"Submit Message does not match!");
